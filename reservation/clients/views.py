@@ -1,20 +1,13 @@
-from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render
+# views.py
+from django.shortcuts import render, redirect
 from .forms import ProductForm
-
-
-def index(request):
-    return HttpResponse("Welcome to the Clients home page!")
-def add(request):
-    return render(request, 'add.html')
-
 
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/success_url/')  # Redirect after POST
+            form.save()
+            return redirect('product_list')  # Assuming you have a URL named 'product_list'
     else:
         form = ProductForm()
-
     return render(request, 'product.html', {'form': form})
